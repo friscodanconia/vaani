@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+:root {
+  --surface: #faf7f2;
+  --surface-raised: #ffffff;
+  --surface-overlay: #f0ece4;
+  --accent: #c2652a;
+  --accent-hover: #a8521f;
+  --accent-bg: #fef3ec;
+  --warm-100: #f0e8dc;
+  --warm-200: #ddd2c0;
+  --warm-300: #bfb09a;
+  --warm-400: #96897a;
+  --warm-500: #78716c;
+  --warm-600: #57534e;
+  --warm-700: #44403c;
+  --warm-800: #292524;
+  --warm-900: #1c1917;
+  --success: #16a34a;
+  --error: #dc2626;
+  --grain-opacity: 0.02;
+}
+
+body {
+  background-color: var(--surface);
+  color: var(--warm-900);
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-display {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.font-body {
+  font-family: 'Outfit', system-ui, sans-serif;
+}
+
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px;
+}
+
+::selection {
+  background: rgba(194, 101, 42, 0.2);
+  color: var(--warm-900);
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(120, 100, 80, 0.25); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(120, 100, 80, 0.4); }
+
+@keyframes slideUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes breathe {
+  0%, 100% { box-shadow: 0 0 20px rgba(194, 101, 42, 0.08); }
+  50% { box-shadow: 0 0 40px rgba(194, 101, 42, 0.15); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes data-flow {
+  0% { stroke-dashoffset: 24; }
+  100% { stroke-dashoffset: 0; }
+}
+
+@keyframes recording-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.anim-slide-up {
+  animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.anim-breathe {
+  animation: breathe 3s ease-in-out infinite;
+}
+
+.anim-shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(194, 101, 42, 0.06) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+.pipeline-connector line {
+  stroke-dasharray: 6 6;
+  animation: data-flow 0.8s linear infinite;
+}
+
+.hover-lift {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px -20px rgba(0,0,0,0.1);
+}
+
+.recording-active {
+  animation: recording-pulse 1s ease-in-out infinite;
+}
