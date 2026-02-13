@@ -14,37 +14,46 @@ export default function DocumentViewer({
   pageCount,
 }: DocumentViewerProps) {
   return (
-    <div
-      className="rounded-2xl p-5"
-      style={{ background: "var(--surface-raised)", border: "1px solid var(--warm-100)" }}
-    >
-      <div className="flex items-start gap-3">
+    <div className="glass-card p-5">
+      <div className="flex items-start gap-3.5">
+        {/* File icon */}
         <div
-          className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl text-lg"
-          style={{ background: "var(--accent-bg)" }}
+          className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl"
+          style={{ background: "var(--accent-subtle)", border: "1px solid var(--border-accent)" }}
         >
-          📄
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="var(--accent)" strokeWidth="1.5" />
+            <polyline points="14,2 14,8 20,8" stroke="var(--accent)" strokeWidth="1.5" />
+          </svg>
         </div>
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-medium" style={{ color: "var(--warm-800)" }}>
+          <p className="truncate text-sm font-medium" style={{ color: "var(--text-primary)" }}>
             {fileName}
           </p>
-          <p className="mt-0.5 text-xs" style={{ color: "var(--warm-400)" }}>
-            {textLength.toLocaleString()} characters extracted
+          <p className="mt-0.5 text-xs" style={{ color: "var(--text-tertiary)" }}>
+            {textLength.toLocaleString()} characters
             {pageCount > 1 ? ` · ${pageCount} pages` : ""}
           </p>
         </div>
+        {/* Status dot */}
+        <div className="flex items-center gap-1.5 rounded-full px-2.5 py-1"
+          style={{ background: "rgba(52, 211, 153, 0.1)" }}>
+          <div className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--success)" }} />
+          <span className="text-[10px] font-medium" style={{ color: "var(--success)" }}>Ready</span>
+        </div>
       </div>
 
+      {/* Extracted text preview */}
       <div
-        className="mt-3 rounded-lg p-3 text-xs leading-relaxed"
+        className="mt-4 rounded-xl p-3.5 text-xs leading-relaxed font-mono"
         style={{
-          background: "var(--surface-overlay)",
-          color: "var(--warm-600)",
-          maxHeight: "120px",
+          background: "var(--bg-secondary)",
+          color: "var(--text-secondary)",
+          border: "1px solid var(--border-subtle)",
+          maxHeight: "110px",
           overflow: "hidden",
-          maskImage: "linear-gradient(to bottom, black 60%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to bottom, black 60%, transparent 100%)",
+          maskImage: "linear-gradient(to bottom, black 50%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to bottom, black 50%, transparent 100%)",
         }}
       >
         {textSnippet}

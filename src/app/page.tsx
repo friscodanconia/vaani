@@ -98,7 +98,6 @@ export default function Home() {
 
     setAppState("processing");
 
-    // Reset pipeline stages for the Q&A flow (keep parse as done)
     setStages((prev) => ({
       ...prev,
       stt: { status: "idle" },
@@ -111,46 +110,37 @@ export default function Home() {
     const totalStart = Date.now();
 
     try {
-      // 1. Get audio blob
       const audioBlob = await recorderRef.current.stop();
       recorderRef.current = null;
 
-      // 2. Transcribe (STT)
+      // STT
       updateStage("stt", "active");
       const sttStart = Date.now();
-
       const sttForm = new FormData();
       sttForm.append("audio", audioBlob, "audio.webm");
-
       const sttRes = await fetch("/api/transcribe", { method: "POST", body: sttForm });
       const sttData = await sttRes.json();
       if (!sttRes.ok) throw new Error(sttData.error || "Transcription failed");
-
       updateStage("stt", "done", Date.now() - sttStart);
 
       const transcript = sttData.transcript;
       let detectedLang = sttData.languageCode || "unknown";
 
-      // 3. Language Detection (LID) — confirm with Language ID API
+      // LID
       updateStage("lid", "active");
       const lidStart = Date.now();
-
       const lidRes = await fetch("/api/detect-language", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: transcript }),
       });
       const lidData = await lidRes.json();
-      if (lidRes.ok && lidData.languageCode) {
-        detectedLang = lidData.languageCode;
-      }
-
+      if (lidRes.ok && lidData.languageCode) detectedLang = lidData.languageCode;
       updateStage("lid", "done", Date.now() - lidStart);
 
-      // 4. Ask LLM
+      // LLM
       updateStage("llm", "active");
       const llmStart = Date.now();
-
       const askRes = await fetch("/api/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -158,38 +148,28 @@ export default function Home() {
       });
       const askData = await askRes.json();
       if (!askRes.ok) throw new Error(askData.error || "LLM failed");
-
       updateStage("llm", "done", Date.now() - llmStart);
 
       let finalAnswer = askData.answer;
       let translatedAnswer = finalAnswer;
 
-      // 5. Translate answer to user's language (if not already in that language)
+      // Translate
       updateStage("translate", "active");
       const transStart = Date.now();
-
       if (detectedLang !== "en-IN" && SUPPORTED_LANGUAGES[detectedLang]) {
         const transRes = await fetch("/api/translate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            text: finalAnswer,
-            sourceLang: "en-IN",
-            targetLang: detectedLang,
-          }),
+          body: JSON.stringify({ text: finalAnswer, sourceLang: "en-IN", targetLang: detectedLang }),
         });
         const transData = await transRes.json();
-        if (transRes.ok && transData.translated) {
-          translatedAnswer = transData.translated;
-        }
+        if (transRes.ok && transData.translated) translatedAnswer = transData.translated;
       }
-
       updateStage("translate", "done", Date.now() - transStart);
 
-      // 6. Synthesize speech (TTS)
+      // TTS
       updateStage("tts", "active");
       const ttsStart = Date.now();
-
       const lang = SUPPORTED_LANGUAGES[detectedLang] || SUPPORTED_LANGUAGES["hi-IN"];
       const ttsRes = await fetch("/api/synthesize", {
         method: "POST",
@@ -201,12 +181,10 @@ export default function Home() {
         }),
       });
       const ttsData = await ttsRes.json();
-
       updateStage("tts", "done", Date.now() - ttsStart);
 
       const audioBase64 = ttsRes.ok ? ttsData.audio : null;
 
-      // Add to history
       setQaHistory((prev) => [
         {
           question: transcript,
@@ -229,37 +207,52 @@ export default function Home() {
   const hasDocument = appState !== "idle" && appState !== "uploading";
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-4xl flex-col px-6 py-12">
-      {/* Header */}
-      <header className="mb-10 text-center anim-slide-up">
+    <div className="relative mx-auto flex min-h-screen max-w-5xl flex-col px-6 py-16" style={{ zIndex: 1 }}>
+      {/* ─── Header ─── */}
+      <header className="mb-16 text-center anim-slide-up">
+        <div className="mb-4">
+          <span
+            className="inline-block text-[10px] font-medium uppercase tracking-[0.3em] rounded-full px-4 py-1.5"
+            style={{
+              color: "var(--accent)",
+              background: "var(--accent-subtle)",
+              border: "1px solid var(--border-accent)",
+            }}
+          >
+            6 Sarvam AI APIs
+          </span>
+        </div>
         <h1
-          className="font-display text-5xl font-light tracking-tight"
-          style={{ color: "var(--warm-900)" }}
+          className="font-display text-7xl font-light italic tracking-tight"
+          style={{
+            color: "var(--text-primary)",
+            textShadow: "0 0 80px var(--accent-glow)",
+          }}
         >
           Vaani
         </h1>
-        <p className="mt-2 text-sm" style={{ color: "var(--warm-400)" }}>
+        <p className="mt-3 text-sm tracking-wide" style={{ color: "var(--text-tertiary)" }}>
           Talk to any document, in any Indian language
         </p>
       </header>
 
-      {/* Main content */}
-      <div className="flex-1 space-y-6">
+      {/* ─── Main content ─── */}
+      <div className="flex-1 space-y-8">
         {/* Document section */}
         {!hasDocument ? (
-          <DocumentUpload onUpload={handleUpload} isUploading={appState === "uploading"} />
+          <div className="anim-slide-up" style={{ animationDelay: "100ms" }}>
+            <DocumentUpload onUpload={handleUpload} isUploading={appState === "uploading"} />
+          </div>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-6 md:grid-cols-2 anim-slide-up" style={{ animationDelay: "100ms" }}>
             {/* Left: Document info */}
-            <div className="space-y-4">
+            <div className="space-y-3">
               <DocumentViewer
                 fileName={fileName}
                 textLength={documentText.length}
                 textSnippet={documentText.slice(0, 500)}
                 pageCount={pageCount}
               />
-
-              {/* New document button */}
               <button
                 onClick={() => {
                   setAppState("idle");
@@ -269,10 +262,12 @@ export default function Home() {
                   setStages(defaultStages());
                   setError(null);
                 }}
-                className="text-xs underline transition-colors"
-                style={{ color: "var(--warm-400)" }}
+                className="text-[11px] tracking-wide transition-colors"
+                style={{ color: "var(--text-tertiary)" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent)")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-tertiary)")}
               >
-                Upload a different document
+                Upload different document
               </button>
             </div>
 
@@ -288,14 +283,19 @@ export default function Home() {
                 />
               ) : (
                 <div
-                  className="flex h-full items-center justify-center rounded-2xl p-8 text-center"
-                  style={{ background: "var(--surface-raised)", border: "1px solid var(--warm-100)" }}
+                  className="glass-card flex h-full items-center justify-center p-10 text-center"
                 >
-                  <p className="text-sm" style={{ color: "var(--warm-400)" }}>
-                    Ask a question about the document
-                    <br />
-                    <span className="text-xs">in any Indian language</span>
-                  </p>
+                  <div>
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="mx-auto mb-4 opacity-20">
+                      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="var(--text-primary)" strokeWidth="1.5" />
+                    </svg>
+                    <p className="text-sm" style={{ color: "var(--text-tertiary)" }}>
+                      Ask a question about the document
+                    </p>
+                    <p className="mt-1 text-xs" style={{ color: "var(--text-tertiary)", opacity: 0.6 }}>
+                      in any Indian language
+                    </p>
+                  </div>
                 </div>
               )}
             </div>
@@ -304,7 +304,7 @@ export default function Home() {
 
         {/* Voice input */}
         {hasDocument && (
-          <div className="flex justify-center py-4">
+          <div className="flex justify-center py-6 anim-slide-up" style={{ animationDelay: "200ms" }}>
             <VoiceInput
               isRecording={appState === "recording"}
               isProcessing={appState === "processing"}
@@ -318,25 +318,31 @@ export default function Home() {
         {/* Error */}
         {error && (
           <div
-            className="rounded-xl p-4 text-center text-sm"
-            style={{ background: "rgba(220, 38, 38, 0.08)", color: "var(--error)" }}
+            className="rounded-xl p-4 text-center text-sm anim-fade-in"
+            style={{ background: "rgba(248, 113, 113, 0.08)", color: "var(--error)", border: "1px solid rgba(248, 113, 113, 0.2)" }}
           >
             {error}
           </div>
         )}
 
         {/* Pipeline */}
-        <PipelineView stages={stages} />
+        <div className="anim-slide-up" style={{ animationDelay: "300ms" }}>
+          <PipelineView stages={stages} />
+        </div>
 
-        {/* Q&A History (older entries) */}
+        {/* Q&A History */}
         {qaHistory.length > 1 && (
-          <div className="space-y-4">
-            <p
-              className="text-[11px] font-medium uppercase tracking-widest"
-              style={{ color: "var(--warm-400)" }}
-            >
-              Previous Questions
-            </p>
+          <div className="space-y-4 anim-fade-in">
+            <div className="flex items-center gap-2.5">
+              <div className="h-px flex-1" style={{ background: "var(--border-subtle)" }} />
+              <span
+                className="text-[10px] font-medium uppercase tracking-[0.2em]"
+                style={{ color: "var(--text-tertiary)" }}
+              >
+                Previous
+              </span>
+              <div className="h-px flex-1" style={{ background: "var(--border-subtle)" }} />
+            </div>
             {qaHistory.slice(1).map((qa, i) => (
               <AnswerCard
                 key={i}
@@ -351,14 +357,15 @@ export default function Home() {
         )}
       </div>
 
-      {/* Footer */}
-      <footer className="mt-12 text-center">
-        <p className="text-[11px]" style={{ color: "var(--warm-400)" }}>
+      {/* ─── Footer ─── */}
+      <footer className="mt-16 text-center">
+        <div className="h-px mb-6" style={{ background: "var(--border-subtle)" }} />
+        <p className="text-[10px] tracking-wide" style={{ color: "var(--text-tertiary)" }}>
           Powered by{" "}
-          <span className="font-medium" style={{ color: "var(--warm-500)" }}>
-            Sarvam AI
-          </span>{" "}
-          — Document Intelligence · Saarika · Language ID · Sarvam-M · Mayura · Bulbul
+          <span style={{ color: "var(--accent-dim)" }}>Sarvam AI</span>
+          <span style={{ opacity: 0.4 }}>
+            {" "}— Document Intelligence · Saarika · Language ID · Sarvam-M · Mayura · Bulbul
+          </span>
         </p>
       </footer>
     </div>

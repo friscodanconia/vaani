@@ -29,22 +29,30 @@ export default function AnswerCard({
   }, [audioBase64]);
 
   return (
-    <div
-      className="rounded-2xl p-5 anim-slide-up"
-      style={{ background: "var(--surface-raised)", border: "1px solid var(--warm-100)" }}
-    >
+    <div className="glass-card p-5 anim-slide-up">
       {/* Question */}
-      <p className="text-xs italic" style={{ color: "var(--warm-400)" }}>
-        &ldquo;{question}&rdquo;
-      </p>
+      <div className="flex items-start gap-2 mb-4">
+        <div
+          className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-[10px]"
+          style={{ background: "var(--accent-subtle)", color: "var(--accent)" }}
+        >
+          Q
+        </div>
+        <p className="text-xs italic leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+          &ldquo;{question}&rdquo;
+        </p>
+      </div>
+
+      {/* Divider */}
+      <div className="h-px mb-4" style={{ background: "var(--border-subtle)" }} />
 
       {/* Answer */}
-      <p className="mt-3 text-sm leading-relaxed" style={{ color: "var(--warm-800)" }}>
+      <p className="text-[13px] leading-relaxed" style={{ color: "var(--text-primary)" }}>
         {answer}
       </p>
 
-      {/* Footer: language + audio + timing */}
-      <div className="mt-4 flex items-center gap-3 flex-wrap">
+      {/* Footer */}
+      <div className="mt-5 flex items-center gap-3 flex-wrap">
         <LanguageBadge languageCode={languageCode} />
 
         {audioBase64 && (
@@ -59,19 +67,30 @@ export default function AnswerCard({
                 }
               }
             }}
-            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-medium tracking-wide transition-all duration-300"
             style={{
-              background: isPlaying ? "var(--accent)" : "var(--surface-overlay)",
-              color: isPlaying ? "white" : "var(--warm-600)",
-              border: `1px solid ${isPlaying ? "var(--accent)" : "var(--warm-200)"}`,
+              background: isPlaying ? "var(--accent)" : "var(--bg-elevated)",
+              color: isPlaying ? "var(--bg-primary)" : "var(--text-secondary)",
+              border: `1px solid ${isPlaying ? "var(--accent)" : "var(--border-visible)"}`,
+              boxShadow: isPlaying ? "0 0 20px var(--accent-glow)" : "none",
             }}
           >
-            {isPlaying ? "⏸ Pause" : "🔊 Play"}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              {isPlaying ? (
+                <>
+                  <rect x="6" y="4" width="4" height="16" rx="1" />
+                  <rect x="14" y="4" width="4" height="16" rx="1" />
+                </>
+              ) : (
+                <polygon points="5,3 19,12 5,21" />
+              )}
+            </svg>
+            {isPlaying ? "Pause" : "Play"}
           </button>
         )}
 
-        <span className="ml-auto text-[10px] tabular-nums" style={{ color: "var(--warm-400)" }}>
-          {(totalTimeMs / 1000).toFixed(1)}s total
+        <span className="ml-auto text-[10px] font-mono tabular-nums" style={{ color: "var(--text-tertiary)" }}>
+          {(totalTimeMs / 1000).toFixed(1)}s
         </span>
       </div>
 

@@ -8,14 +8,13 @@ export default function LanguageBadge({ languageCode }: { languageCode: string }
 
   return (
     <span
-      className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium"
+      className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-medium tracking-wide"
       style={{
-        background: "var(--accent-bg)",
+        background: "var(--accent-subtle)",
         color: "var(--accent)",
-        border: "1px solid rgba(194, 101, 42, 0.2)",
+        border: "1px solid var(--border-accent)",
       }}
     >
-      <span className="text-[10px]">🇮🇳</span>
       {label}
     </span>
   );
