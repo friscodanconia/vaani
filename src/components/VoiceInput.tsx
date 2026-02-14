@@ -16,34 +16,45 @@ export default function VoiceInput({
   onStop,
 }: VoiceInputProps) {
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex flex-col items-center gap-5">
       {/* Outer glow ring */}
       <div className="relative">
         {/* Animated pulse rings */}
         {isRecording && (
           <>
             <span
-              className="absolute inset-[-12px] rounded-full"
+              className="absolute inset-[-16px] rounded-full"
               style={{
-                border: "1.5px solid var(--accent)",
+                border: "2px solid var(--accent)",
                 animation: "pulse-ring 2s ease-out infinite",
               }}
             />
             <span
-              className="absolute inset-[-12px] rounded-full"
+              className="absolute inset-[-16px] rounded-full"
               style={{
-                border: "1.5px solid var(--accent)",
+                border: "2px solid var(--accent)",
                 animation: "pulse-ring 2s ease-out infinite 0.7s",
               }}
             />
             <span
-              className="absolute inset-[-12px] rounded-full"
+              className="absolute inset-[-16px] rounded-full"
               style={{
-                border: "1.5px solid var(--accent)",
+                border: "2px solid var(--accent)",
                 animation: "pulse-ring 2s ease-out infinite 1.4s",
               }}
             />
           </>
+        )}
+
+        {/* Static ring when idle */}
+        {!isRecording && !disabled && (
+          <span
+            className="absolute inset-[-8px] rounded-full"
+            style={{
+              border: "1.5px solid var(--border-accent)",
+              opacity: 0.5,
+            }}
+          />
         )}
 
         <button
@@ -58,7 +69,7 @@ export default function VoiceInput({
             onStop();
           }}
           disabled={disabled || isProcessing}
-          className={`relative flex h-[72px] w-[72px] items-center justify-center rounded-full transition-all duration-500 ${
+          className={`relative flex h-[80px] w-[80px] items-center justify-center rounded-full transition-all duration-500 ${
             isRecording ? "recording-active" : ""
           }`}
           style={{
@@ -66,29 +77,31 @@ export default function VoiceInput({
               ? "linear-gradient(135deg, var(--accent), var(--accent-dim))"
               : disabled
               ? "var(--bg-tertiary)"
-              : "var(--bg-elevated)",
-            border: `1.5px solid ${
-              isRecording ? "var(--accent)" : disabled ? "var(--border-subtle)" : "var(--border-visible)"
+              : "linear-gradient(135deg, var(--bg-elevated), var(--bg-glass))",
+            border: `2px solid ${
+              isRecording ? "var(--accent)" : disabled ? "var(--border-subtle)" : "var(--accent-dim)"
             }`,
             cursor: disabled ? "not-allowed" : "pointer",
             boxShadow: isRecording
               ? "0 0 50px var(--accent-glow-strong), 0 0 100px var(--accent-glow)"
-              : "0 4px 30px rgba(0, 0, 0, 0.3)",
+              : disabled
+              ? "none"
+              : "0 8px 40px rgba(184, 99, 58, 0.12), 0 2px 8px rgba(80, 55, 30, 0.08)",
           }}
         >
           {isProcessing ? (
             <div
-              className="h-6 w-6 animate-spin rounded-full border-2 border-t-transparent"
+              className="h-7 w-7 animate-spin rounded-full border-2 border-t-transparent"
               style={{ borderColor: "var(--border-visible)", borderTopColor: "var(--accent)" }}
             />
           ) : (
             <svg
-              width="26"
-              height="26"
+              width="30"
+              height="30"
               viewBox="0 0 24 24"
               fill="none"
-              stroke={isRecording ? "white" : disabled ? "var(--text-tertiary)" : "var(--text-secondary)"}
-              strokeWidth="1.5"
+              stroke={isRecording ? "white" : disabled ? "var(--text-tertiary)" : "var(--accent)"}
+              strokeWidth="1.8"
               strokeLinecap="round"
               strokeLinejoin="round"
             >
@@ -101,15 +114,20 @@ export default function VoiceInput({
         </button>
       </div>
 
-      <p className="text-xs tracking-wide" style={{ color: "var(--text-tertiary)" }}>
+      <p className="text-sm font-medium tracking-wide" style={{ color: isRecording ? "var(--accent)" : "var(--text-secondary)" }}>
         {isProcessing
           ? "Processing your question..."
           : isRecording
           ? "Listening — release to send"
           : disabled
           ? "Upload a document first"
-          : "Hold to speak · any Indian language"}
+          : "Hold to speak"}
       </p>
+      {!isRecording && !isProcessing && !disabled && (
+        <p className="text-xs font-medium" style={{ color: "var(--text-tertiary)" }}>
+          Hindi · Tamil · Bengali · Telugu · any Indian language
+        </p>
+      )}
     </div>
   );
 }

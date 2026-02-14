@@ -1,15 +1,15 @@
 export const SUPPORTED_LANGUAGES: Record<string, { name: string; voice: string; nativeName: string }> = {
-  "hi-IN": { name: "Hindi", nativeName: "हिन्दी", voice: "ananya" },
-  "ta-IN": { name: "Tamil", nativeName: "தமிழ்", voice: "ananya" },
-  "te-IN": { name: "Telugu", nativeName: "తెలుగు", voice: "ananya" },
-  "kn-IN": { name: "Kannada", nativeName: "ಕನ್ನಡ", voice: "ananya" },
-  "ml-IN": { name: "Malayalam", nativeName: "മലയാളം", voice: "ananya" },
-  "bn-IN": { name: "Bengali", nativeName: "বাংলা", voice: "ananya" },
-  "gu-IN": { name: "Gujarati", nativeName: "ગુજરાતી", voice: "ananya" },
-  "mr-IN": { name: "Marathi", nativeName: "मराठी", voice: "ananya" },
-  "pa-IN": { name: "Punjabi", nativeName: "ਪੰਜਾਬੀ", voice: "ananya" },
-  "or-IN": { name: "Odia", nativeName: "ଓଡ଼ିଆ", voice: "ananya" },
-  "en-IN": { name: "English", nativeName: "English", voice: "ananya" },
+  "hi-IN": { name: "Hindi", nativeName: "हिन्दी", voice: "priya" },
+  "ta-IN": { name: "Tamil", nativeName: "தமிழ்", voice: "priya" },
+  "te-IN": { name: "Telugu", nativeName: "తెలుగు", voice: "priya" },
+  "kn-IN": { name: "Kannada", nativeName: "ಕನ್ನಡ", voice: "priya" },
+  "ml-IN": { name: "Malayalam", nativeName: "മലയാളം", voice: "priya" },
+  "bn-IN": { name: "Bengali", nativeName: "বাংলা", voice: "priya" },
+  "gu-IN": { name: "Gujarati", nativeName: "ગુજરાતી", voice: "priya" },
+  "mr-IN": { name: "Marathi", nativeName: "मराठी", voice: "priya" },
+  "pa-IN": { name: "Punjabi", nativeName: "ਪੰਜਾਬੀ", voice: "priya" },
+  "or-IN": { name: "Odia", nativeName: "ଓଡ଼ିଆ", voice: "priya" },
+  "en-IN": { name: "English", nativeName: "English", voice: "priya" },
 };
 
 export type PipelineStage = "parse" | "stt" | "lid" | "llm" | "translate" | "tts";
@@ -24,3 +24,15 @@ export const PIPELINE_STAGES: { id: PipelineStage; label: string; apiName: strin
 ];
 
 export type StageStatus = "idle" | "active" | "done" | "error";
+
+export const AGENT_PERSONAS: {
+  id: PipelineStage; name: string; role: string; tagline: string;
+  icon: string; apiName: string; flowIn: string; flowOut: string;
+}[] = [
+  { id: "parse", name: "Arjun", role: "Document Reader", tagline: "Extracts text from any document", icon: "\u{1F4C4}", apiName: "Document Intelligence", flowIn: "Hindi PDF", flowOut: "Hindi text" },
+  { id: "stt", name: "Priya", role: "Voice Transcriber", tagline: "Turns speech into text", icon: "\u{1F399}\uFE0F", apiName: "Saarika", flowIn: "Tamil voice", flowOut: "Tamil text" },
+  { id: "lid", name: "Kavi", role: "Language Detective", tagline: "Identifies which language you spoke", icon: "\u{1F310}", apiName: "Language ID", flowIn: "Tamil text", flowOut: "\"Tamil\" detected" },
+  { id: "llm", name: "Vidya", role: "Knowledge Engine", tagline: "Finds answers in documents", icon: "\u{1F9E0}", apiName: "Sarvam-M", flowIn: "Hindi doc + Tamil Q", flowOut: "English answer" },
+  { id: "translate", name: "Maya", role: "Translator", tagline: "Translates between languages", icon: "\u{1F504}", apiName: "Mayura", flowIn: "English answer", flowOut: "Tamil answer" },
+  { id: "tts", name: "Rahi", role: "Voice Artist", tagline: "Speaks the answer back to you", icon: "\u{1F50A}", apiName: "Bulbul", flowIn: "Tamil text", flowOut: "Tamil audio" },
+];

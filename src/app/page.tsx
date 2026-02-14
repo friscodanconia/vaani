@@ -5,11 +5,13 @@ import DocumentUpload from "@/components/DocumentUpload";
 import DocumentViewer from "@/components/DocumentViewer";
 import VoiceInput from "@/components/VoiceInput";
 import AnswerCard from "@/components/AnswerCard";
-import PipelineView from "@/components/PipelineView";
+import AgentSwarmView from "@/components/AgentSwarmView";
+import DemoView from "@/components/DemoView";
 import { AudioRecorder } from "@/lib/audioRecorder";
 import { SUPPORTED_LANGUAGES, type PipelineStage, type StageStatus } from "@/lib/constants";
 
 type AppState = "idle" | "uploading" | "doc-ready" | "recording" | "processing" | "answering";
+type Mode = "demo" | "try";
 
 interface QAEntry {
   question: string;
@@ -30,6 +32,7 @@ const defaultStages = (): Record<PipelineStage, { status: StageStatus; timeMs?: 
 });
 
 export default function Home() {
+  const [mode, setMode] = useState<Mode>("demo");
   const [appState, setAppState] = useState<AppState>("idle");
   const [documentText, setDocumentText] = useState("");
   const [fileName, setFileName] = useState("");
@@ -209,7 +212,7 @@ export default function Home() {
   return (
     <div className="relative mx-auto flex min-h-screen max-w-5xl flex-col px-6 py-16" style={{ zIndex: 1 }}>
       {/* ─── Header ─── */}
-      <header className="mb-16 text-center anim-slide-up">
+      <header className="mb-10 text-center anim-slide-up">
         <div className="mb-4">
           <span
             className="inline-block text-[10px] font-medium uppercase tracking-[0.3em] rounded-full px-4 py-1.5"
@@ -223,150 +226,210 @@ export default function Home() {
           </span>
         </div>
         <h1
-          className="font-display text-7xl font-light italic tracking-tight"
+          className="font-display text-8xl font-light italic tracking-tight"
           style={{
             color: "var(--text-primary)",
-            textShadow: "0 0 80px var(--accent-glow)",
+            textShadow: "0 0 80px var(--accent-glow), 0 2px 0 var(--accent-subtle)",
           }}
         >
           Vaani
         </h1>
-        <p className="mt-3 text-sm tracking-wide" style={{ color: "var(--text-tertiary)" }}>
+        <p
+          className="mt-4 text-base font-medium tracking-wide"
+          style={{ color: "var(--text-secondary)" }}
+        >
           Talk to any document, in any Indian language
         </p>
       </header>
 
+      {/* ─── Tab Bar ─── */}
+      <div className="mb-10 flex justify-center anim-slide-up" style={{ animationDelay: "50ms" }}>
+        <div
+          className="inline-flex rounded-full p-1"
+          style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-subtle)" }}
+        >
+          {([
+            { key: "demo" as Mode, label: "Watch Demo" },
+            { key: "try" as Mode, label: "Try It Yourself" },
+          ]).map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => setMode(tab.key)}
+              className="relative rounded-full px-6 py-2 text-sm font-medium tracking-wide transition-all duration-300"
+              style={{
+                background: mode === tab.key ? "var(--bg-elevated)" : "transparent",
+                color: mode === tab.key ? "var(--accent)" : "var(--text-tertiary)",
+                boxShadow: mode === tab.key
+                  ? "0 1px 8px rgba(0,0,0,0.1), 0 0 0 1px var(--border-accent)"
+                  : "none",
+              }}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* ─── Main content ─── */}
       <div className="flex-1 space-y-8">
-        {/* Document section */}
-        {!hasDocument ? (
-          <div className="anim-slide-up" style={{ animationDelay: "100ms" }}>
-            <DocumentUpload onUpload={handleUpload} isUploading={appState === "uploading"} />
-          </div>
+        {mode === "demo" ? (
+          <DemoView onSwitchToTry={() => setMode("try")} />
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 anim-slide-up" style={{ animationDelay: "100ms" }}>
-            {/* Left: Document info */}
-            <div className="space-y-3">
-              <DocumentViewer
-                fileName={fileName}
-                textLength={documentText.length}
-                textSnippet={documentText.slice(0, 500)}
-                pageCount={pageCount}
-              />
-              <button
-                onClick={() => {
-                  setAppState("idle");
-                  setDocumentText("");
-                  setFileName("");
-                  setQaHistory([]);
-                  setStages(defaultStages());
-                  setError(null);
-                }}
-                className="text-[11px] tracking-wide transition-colors"
-                style={{ color: "var(--text-tertiary)" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent)")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-tertiary)")}
-              >
-                Upload different document
-              </button>
-            </div>
-
-            {/* Right: Latest answer */}
-            <div>
-              {qaHistory.length > 0 ? (
-                <AnswerCard
-                  question={qaHistory[0].question}
-                  answer={qaHistory[0].translatedAnswer || qaHistory[0].answer}
-                  languageCode={qaHistory[0].languageCode}
-                  audioBase64={qaHistory[0].audioBase64}
-                  totalTimeMs={qaHistory[0].totalTimeMs}
-                />
-              ) : (
-                <div
-                  className="glass-card flex h-full items-center justify-center p-10 text-center"
-                >
-                  <div>
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="mx-auto mb-4 opacity-20">
-                      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="var(--text-primary)" strokeWidth="1.5" />
-                    </svg>
-                    <p className="text-sm" style={{ color: "var(--text-tertiary)" }}>
-                      Ask a question about the document
-                    </p>
-                    <p className="mt-1 text-xs" style={{ color: "var(--text-tertiary)", opacity: 0.6 }}>
-                      in any Indian language
-                    </p>
-                  </div>
+          <>
+            {/* Document section */}
+            {!hasDocument ? (
+              <div className="anim-slide-up" style={{ animationDelay: "100ms" }}>
+                <DocumentUpload onUpload={handleUpload} isUploading={appState === "uploading"} />
+              </div>
+            ) : (
+              <div className="grid gap-6 md:grid-cols-2 anim-slide-up" style={{ animationDelay: "100ms" }}>
+                {/* Left: Document info */}
+                <div className="space-y-3">
+                  <DocumentViewer
+                    fileName={fileName}
+                    textLength={documentText.length}
+                    textSnippet={documentText.slice(0, 500)}
+                    pageCount={pageCount}
+                  />
+                  <button
+                    onClick={() => {
+                      setAppState("idle");
+                      setDocumentText("");
+                      setFileName("");
+                      setQaHistory([]);
+                      setStages(defaultStages());
+                      setError(null);
+                    }}
+                    className="text-[11px] tracking-wide transition-colors"
+                    style={{ color: "var(--text-tertiary)" }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent)")}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-tertiary)")}
+                  >
+                    Upload different document
+                  </button>
                 </div>
-              )}
-            </div>
-          </div>
-        )}
 
-        {/* Voice input */}
-        {hasDocument && (
-          <div className="flex justify-center py-6 anim-slide-up" style={{ animationDelay: "200ms" }}>
-            <VoiceInput
-              isRecording={appState === "recording"}
-              isProcessing={appState === "processing"}
-              disabled={appState === "processing"}
-              onStart={handleRecordStart}
-              onStop={handleRecordStop}
-            />
-          </div>
-        )}
+                {/* Right: Latest answer */}
+                <div>
+                  {qaHistory.length > 0 ? (
+                    <AnswerCard
+                      question={qaHistory[0].question}
+                      answer={qaHistory[0].translatedAnswer || qaHistory[0].answer}
+                      languageCode={qaHistory[0].languageCode}
+                      audioBase64={qaHistory[0].audioBase64}
+                      totalTimeMs={qaHistory[0].totalTimeMs}
+                    />
+                  ) : (
+                    <div
+                      className="glass-card flex h-full items-center justify-center p-10 text-center"
+                    >
+                      <div>
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="mx-auto mb-4 opacity-20">
+                          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="var(--text-primary)" strokeWidth="1.5" />
+                        </svg>
+                        <p className="text-sm" style={{ color: "var(--text-tertiary)" }}>
+                          Ask a question about the document
+                        </p>
+                        <p className="mt-1 text-xs" style={{ color: "var(--text-tertiary)", opacity: 0.6 }}>
+                          in any Indian language
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
 
-        {/* Error */}
-        {error && (
-          <div
-            className="rounded-xl p-4 text-center text-sm anim-fade-in"
-            style={{ background: "rgba(248, 113, 113, 0.08)", color: "var(--error)", border: "1px solid rgba(248, 113, 113, 0.2)" }}
-          >
-            {error}
-          </div>
-        )}
+            {/* Voice input */}
+            {hasDocument && (
+              <div className="flex justify-center py-6 anim-slide-up" style={{ animationDelay: "200ms" }}>
+                <VoiceInput
+                  isRecording={appState === "recording"}
+                  isProcessing={appState === "processing"}
+                  disabled={appState === "processing"}
+                  onStart={handleRecordStart}
+                  onStop={handleRecordStop}
+                />
+              </div>
+            )}
 
-        {/* Pipeline */}
-        <div className="anim-slide-up" style={{ animationDelay: "300ms" }}>
-          <PipelineView stages={stages} />
-        </div>
-
-        {/* Q&A History */}
-        {qaHistory.length > 1 && (
-          <div className="space-y-4 anim-fade-in">
-            <div className="flex items-center gap-2.5">
-              <div className="h-px flex-1" style={{ background: "var(--border-subtle)" }} />
-              <span
-                className="text-[10px] font-medium uppercase tracking-[0.2em]"
-                style={{ color: "var(--text-tertiary)" }}
+            {/* Error */}
+            {error && (
+              <div
+                className="rounded-xl p-4 text-center text-sm anim-fade-in"
+                style={{ background: "rgba(248, 113, 113, 0.08)", color: "var(--error)", border: "1px solid rgba(248, 113, 113, 0.2)" }}
               >
-                Previous
-              </span>
-              <div className="h-px flex-1" style={{ background: "var(--border-subtle)" }} />
+                {error}
+              </div>
+            )}
+
+            {/* Pipeline */}
+            <div className="anim-slide-up" style={{ animationDelay: "300ms" }}>
+              <AgentSwarmView stages={stages} />
             </div>
-            {qaHistory.slice(1).map((qa, i) => (
-              <AnswerCard
-                key={i}
-                question={qa.question}
-                answer={qa.translatedAnswer || qa.answer}
-                languageCode={qa.languageCode}
-                audioBase64={qa.audioBase64}
-                totalTimeMs={qa.totalTimeMs}
-              />
-            ))}
-          </div>
+
+            {/* Q&A History */}
+            {qaHistory.length > 1 && (
+              <div className="space-y-4 anim-fade-in">
+                <div className="flex items-center gap-2.5">
+                  <div className="h-px flex-1" style={{ background: "var(--border-subtle)" }} />
+                  <span
+                    className="text-[10px] font-medium uppercase tracking-[0.2em]"
+                    style={{ color: "var(--text-tertiary)" }}
+                  >
+                    Previous
+                  </span>
+                  <div className="h-px flex-1" style={{ background: "var(--border-subtle)" }} />
+                </div>
+                {qaHistory.slice(1).map((qa, i) => (
+                  <AnswerCard
+                    key={i}
+                    question={qa.question}
+                    answer={qa.translatedAnswer || qa.answer}
+                    languageCode={qa.languageCode}
+                    audioBase64={qa.audioBase64}
+                    totalTimeMs={qa.totalTimeMs}
+                  />
+                ))}
+              </div>
+            )}
+          </>
         )}
       </div>
 
       {/* ─── Footer ─── */}
-      <footer className="mt-16 text-center">
-        <div className="h-px mb-6" style={{ background: "var(--border-subtle)" }} />
-        <p className="text-[10px] tracking-wide" style={{ color: "var(--text-tertiary)" }}>
-          Powered by{" "}
-          <span style={{ color: "var(--accent-dim)" }}>Sarvam AI</span>
-          <span style={{ opacity: 0.4 }}>
-            {" "}— Document Intelligence · Saarika · Language ID · Sarvam-M · Mayura · Bulbul
-          </span>
-        </p>
+      <footer className="mt-20 anim-slide-up" style={{ animationDelay: "400ms" }}>
+        <div className="h-px mb-8" style={{ background: "linear-gradient(90deg, transparent, var(--accent-dim), transparent)" }} />
+        <div className="flex flex-col items-center gap-4">
+          <p
+            className="font-display text-lg italic"
+            style={{ color: "var(--text-secondary)" }}
+          >
+            Built on{" "}
+            <span className="font-semibold not-italic" style={{ color: "var(--accent)" }}>Sarvam AI</span>
+          </p>
+          <div className="flex flex-wrap justify-center gap-x-1.5 gap-y-1">
+            {["Document Intelligence", "Saarika", "Language ID", "Sarvam-M", "Mayura", "Bulbul"].map((api) => (
+              <span
+                key={api}
+                className="rounded-full px-3 py-1 text-[11px] font-semibold tracking-wide"
+                style={{
+                  background: "var(--accent-subtle)",
+                  color: "var(--accent-dim)",
+                  border: "1px solid var(--border-accent)",
+                }}
+              >
+                {api}
+              </span>
+            ))}
+          </div>
+          <p
+            className="mt-2 text-xs font-medium tracking-widest uppercase"
+            style={{ color: "var(--text-tertiary)" }}
+          >
+            6 APIs · 1 Voice · Any Language
+          </p>
+        </div>
       </footer>
     </div>
   );

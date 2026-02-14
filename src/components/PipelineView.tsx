@@ -13,7 +13,7 @@ export default function PipelineView({ stages }: PipelineViewProps) {
       <div className="flex items-center gap-2.5 mb-5">
         <div className="h-px flex-1" style={{ background: "var(--border-subtle)" }} />
         <span
-          className="text-[10px] font-medium uppercase tracking-[0.2em]"
+          className="text-[11px] font-semibold uppercase tracking-[0.2em]"
           style={{ color: "var(--text-tertiary)" }}
         >
           Sarvam Pipeline
@@ -70,7 +70,7 @@ export default function PipelineView({ stages }: PipelineViewProps) {
                 >
                   {/* Stage number indicator */}
                   <div
-                    className="mb-1.5 flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-semibold"
+                    className="mb-1.5 flex h-7 w-7 items-center justify-center rounded-full text-[11px] font-bold"
                     style={{
                       background: hasActivity
                         ? isDone
@@ -93,7 +93,7 @@ export default function PipelineView({ stages }: PipelineViewProps) {
                   </div>
 
                   <span
-                    className="text-[11px] font-semibold tracking-wide"
+                    className="text-[13px] font-bold tracking-wide"
                     style={{
                       color: isDone || isActive ? "var(--accent)" : isError ? "var(--error)" : "var(--text-secondary)",
                     }}
@@ -102,7 +102,7 @@ export default function PipelineView({ stages }: PipelineViewProps) {
                   </span>
 
                   <span
-                    className="mt-0.5 text-[8px] truncate max-w-full"
+                    className="mt-0.5 text-[10px] font-medium truncate max-w-full"
                     style={{ color: "var(--text-tertiary)" }}
                   >
                     {stage.apiName}
@@ -110,7 +110,7 @@ export default function PipelineView({ stages }: PipelineViewProps) {
 
                   {s.timeMs !== undefined && (
                     <span
-                      className="mt-1.5 text-[9px] font-mono tabular-nums"
+                      className="mt-1.5 text-[10px] font-mono font-semibold tabular-nums"
                       style={{ color: isDone ? "var(--accent-dim)" : "var(--text-tertiary)" }}
                     >
                       {(s.timeMs / 1000).toFixed(1)}s

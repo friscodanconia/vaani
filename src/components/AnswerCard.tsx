@@ -24,7 +24,6 @@ export default function AnswerCard({
   useEffect(() => {
     if (audioBase64 && audioRef.current) {
       audioRef.current.src = `data:audio/mp3;base64,${audioBase64}`;
-      audioRef.current.play().catch(() => {});
     }
   }, [audioBase64]);
 
