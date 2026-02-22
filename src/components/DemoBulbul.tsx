@@ -86,7 +86,7 @@ export default function DemoBulbul() {
           One sentence. <strong style={{ color: "var(--text-primary)" }}>Five languages. Five voices.</strong> Hear the same words travel across India.
         </p>
         <p className="text-base leading-relaxed" style={{ color: "var(--text-tertiary)" }}>
-          Bulbul V3 is Sarvam&apos;s production-ready text-to-speech model for Indian languages. Natural intonation, correct pronunciation, expressive delivery — not robotic synthesis.
+          Bulbul V3 is Sarvam&apos;s production-ready text-to-speech model for Indian languages. Natural intonation, correct pronunciation, expressive delivery. Not robotic synthesis.
         </p>
       </div>
 

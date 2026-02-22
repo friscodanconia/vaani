@@ -23,7 +23,7 @@ export default function VaaniPipelinePage() {
           </div>
           <div className="max-w-2xl mx-auto text-center space-y-3">
             <p className="text-lg leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-              Watch all 5 Sarvam AI models work <strong style={{ color: "var(--text-primary)" }}>in concert</strong> — from reading a document to speaking the answer aloud in the user&apos;s language.
+              Watch all 5 Sarvam AI models work <strong style={{ color: "var(--text-primary)" }}>in concert</strong>, from reading a document to speaking the answer aloud in the user&apos;s language.
             </p>
             <p className="text-base" style={{ color: "var(--text-tertiary)" }}>
               Vision reads the document. Saaras transcribes the question. Sarvam-M reasons over the text. Mayura translates. Bulbul speaks.

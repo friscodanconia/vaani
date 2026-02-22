@@ -38,7 +38,7 @@ export default function Home() {
             India has 22 official languages, but most government documents arrive in just one.
           </p>
           <p className="mt-4 font-body text-lg sm:text-xl text-[var(--text-secondary)] font-light leading-relaxed">
-            Vaani chains 5 AI models — vision, speech, reasoning, translation, and voice synthesis — so anyone can <strong className="font-medium" style={{ color: "var(--text-primary)" }}>upload a document and ask questions in their own language</strong>.
+            Vaani chains 5 AI models (vision, speech, reasoning, translation, and voice synthesis) so anyone can <strong className="font-medium" style={{ color: "var(--text-primary)" }}>upload a document and ask questions in their own language</strong>.
           </p>
           <p className="mt-4 text-base text-[var(--text-muted)]">
             Watch the demo below to see all 5 models work in concert.

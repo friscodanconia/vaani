@@ -165,10 +165,10 @@ export default function DemoSaaras() {
       <div className="max-w-2xl mx-auto mb-12 text-center space-y-4">
         <p className="text-lg leading-relaxed" style={{ color: "var(--text-secondary)" }}>
           Indians don&apos;t speak one language at a time. In a single sentence, a speaker switches between{" "}
-          <strong style={{ color: "var(--text-primary)" }}>Hindi and English mid-sentence</strong> — sometimes mid-word.
+          <strong style={{ color: "var(--text-primary)" }}>Hindi and English mid-sentence</strong>, sometimes mid-word.
         </p>
         <p className="text-base leading-relaxed" style={{ color: "var(--text-tertiary)" }}>
-          Most speech engines transcribe this as gibberish. Saaras is trained on real Indian conversations — code-mixed, noisy, multi-speaker — across 22 languages.
+          Most speech engines transcribe this as gibberish. Saaras is trained on real Indian conversations: code-mixed, noisy, multi-speaker, across 22 languages.
         </p>
       </div>
 
@@ -220,7 +220,7 @@ export default function DemoSaaras() {
             </div>
 
             <p className="text-sm leading-relaxed mb-5" style={{ color: "var(--text-secondary)" }}>
-              Virus delivers his iconic &ldquo;Life is a race&rdquo; speech — switching between Hindi and English in every sentence. Watch Saaras handle every word.
+              Virus delivers his iconic &ldquo;Life is a race&rdquo; speech, switching between Hindi and English in every sentence. Watch Saaras handle every word.
             </p>
 
             {/* Waveform */}
@@ -387,7 +387,7 @@ export default function DemoSaaras() {
         <div className="mt-10 anim-fade-in space-y-8">
           <div className="text-center space-y-3">
             <p className="text-lg leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-              Every Hindi word. Every English word. Every mid-sentence switch — transcribed perfectly.
+              Every Hindi word. Every English word. Every mid-sentence switch. Transcribed perfectly.
             </p>
           </div>
 

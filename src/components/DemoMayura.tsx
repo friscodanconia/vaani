@@ -13,11 +13,11 @@ const CONTEXT = "Offering tea and sweets to a guest during rain";
 const LITERAL_TEXT =
   "Elder brother, will you eat some tea? Outside rain is falling, please take some rest for a little while. I have just now made rosogolla, eat that also and go.";
 const LITERAL_NOTE =
-  '"Eat tea", "eat that also and go" — literal translations of চা খাবেন and খেয়ে যান that sound bizarre in English.';
+  '"Eat tea", "eat that also and go": literal translations of চা খাবেন and খেয়ে যান that sound bizarre in English.';
 
 // Cached Mayura translation (fallback if API fails)
 const MAYURA_FALLBACK =
-  "Hey, would you like some tea? It's pouring outside — why don't you sit down and take a break for a bit? I just made some rosogolla, have some before you leave.";
+  "Hey, would you like some tea? It's pouring outside, why don't you sit down and take a break for a bit? I just made some rosogolla, have some before you leave.";
 const MAYURA_NOTE =
   "Drops the stiff honorific, fixes 'eat tea' → 'like some tea', and captures the warmth of the original Bengali.";
 
@@ -288,11 +288,11 @@ export default function DemoMayura() {
           Literal translation{" "}
           <strong style={{ color: "var(--text-primary)" }}>misses the soul</strong>.
           &ldquo;Will you eat some tea?&rdquo; is grammatically correct Bengali-to-English
-          — but no one talks like that.
+          but no one talks like that.
         </p>
         <p className="text-base leading-relaxed" style={{ color: "var(--text-tertiary)" }}>
           Mayura translates meaning, not just words. Watch a literal engine and Mayura
-          race on the same sentence — live.
+          race on the same sentence, live.
         </p>
       </div>
 
@@ -314,7 +314,7 @@ export default function DemoMayura() {
             Play Demo
           </button>
           <p className="text-sm mt-3" style={{ color: "var(--text-tertiary)" }}>
-            Bengali → English — literal vs Mayura, side by side
+            Bengali to English: literal vs Mayura, side by side
           </p>
         </div>
       )}

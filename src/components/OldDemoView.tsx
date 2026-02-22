@@ -362,10 +362,10 @@ export default function OldDemoView() {
       {!demoStarted && (
         <div className="text-center py-8 max-w-lg mx-auto space-y-3">
           <p className="text-base leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-            A farmer receives a government form in Hindi — a language he can&apos;t read. He picks up his phone, points it at the document, and asks a question <strong style={{ color: "var(--accent)" }}>in his own language</strong>.
+            A farmer receives a government form in Hindi, a language he can&apos;t read. He picks up his phone, points it at the document, and asks a question <strong style={{ color: "var(--accent)" }}>in his own language</strong>.
           </p>
           <p className="text-sm" style={{ color: "var(--text-tertiary)" }}>
-            Choose a language above, then press <strong>Play Demo</strong> to watch 5 AI models answer him — by voice.
+            Choose a language above, then press <strong>Play Demo</strong> to watch 5 AI models answer him, by voice.
           </p>
         </div>
       )}
@@ -387,7 +387,7 @@ export default function OldDemoView() {
                   {scenario.languageCode === "hi-IN" ? (
                     <>
                       <p className="text-base leading-relaxed mb-2" style={{ color: "var(--text-secondary)" }}>
-                        <strong style={{ color: "var(--text-primary)" }}>Rajesh</strong>, a farmer in <strong style={{ color: "var(--text-primary)" }}>{region}</strong>, receives the PM-KISAN subsidy form — but the dense government language is hard to understand.
+                        <strong style={{ color: "var(--text-primary)" }}>Rajesh</strong>, a farmer in <strong style={{ color: "var(--text-primary)" }}>{region}</strong>, receives the PM-KISAN subsidy form, but the dense government language is hard to understand.
                       </p>
                       <p className="text-base leading-relaxed" style={{ color: "var(--text-secondary)" }}>
                         He asks a question <strong style={{ color: "var(--accent)" }}>in Hindi</strong> and <strong style={{ color: "var(--accent)" }}>hears Vaani answer in plain Hindi, by voice</strong>.
@@ -396,7 +396,7 @@ export default function OldDemoView() {
                   ) : (
                     <>
                       <p className="text-base leading-relaxed mb-2" style={{ color: "var(--text-secondary)" }}>
-                        <strong style={{ color: "var(--text-primary)" }}>Rajesh</strong>, a farmer in <strong style={{ color: "var(--text-primary)" }}>{region}</strong>, receives the PM-KISAN subsidy form — entirely in Hindi.
+                        <strong style={{ color: "var(--text-primary)" }}>Rajesh</strong>, a farmer in <strong style={{ color: "var(--text-primary)" }}>{region}</strong>, receives the PM-KISAN subsidy form, entirely in Hindi.
                       </p>
                       <p className="text-base leading-relaxed" style={{ color: "var(--text-secondary)" }}>
                         He speaks <strong style={{ color: "var(--accent)" }}>{scenario.languageName}</strong>, not Hindi.

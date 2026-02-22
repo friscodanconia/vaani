@@ -327,11 +327,11 @@ export default function DemoTranslate() {
           India publishes news in{" "}
           <strong style={{ color: "var(--text-primary)" }}>22 official languages</strong>.
           A headline in English should read just as naturally in Tamil, Bengali, or
-          Gujarati — not like a machine translated it.
+          Gujarati. Not like a machine translated it.
         </p>
         <p className="text-base leading-relaxed" style={{ color: "var(--text-tertiary)" }}>
           Sarvam Translate is an open-weight translation model trained specifically for
-          Indian languages. Watch one headline race across eight front pages — live.
+          Indian languages. Watch one headline race across eight front pages, live.
         </p>
       </div>
 
@@ -353,7 +353,7 @@ export default function DemoTranslate() {
             Play Demo
           </button>
           <p className="text-sm mt-3" style={{ color: "var(--text-tertiary)" }}>
-            Live API calls — watch 8 translations race in parallel
+            Live API calls. Watch 8 translations race in parallel
           </p>
         </div>
       )}

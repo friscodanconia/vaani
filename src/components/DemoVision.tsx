@@ -9,7 +9,7 @@ const MANUSCRIPT = {
   language: "Tamil",
   extractedLines: [
     { label: "Panel (a)", tamil: "யாதும் ஊரே யாவரும் கேளிர்\nதீதும் நன்றும் பிறர் தர வாரா", english: "Every country is my own, and every person my kin. Good and evil do not come from others." },
-    { label: "Panel (b)", tamil: "நோதலும் தணிதலும் அவற்றோர் அன்ன\nசாதலும் புதுவது அன்றே வாழ்தல்", english: "Pain and its relief are of the same nature. Death too is not new — nor is living." },
+    { label: "Panel (b)", tamil: "நோதலும் தணிதலும் அவற்றோர் அன்ன\nசாதலும் புதுவது அன்றே வாழ்தல்", english: "Pain and its relief are of the same nature. Death too is not new, nor is living." },
     { label: "Panel (c)", tamil: "உண்டால் அம்ம இவ்வுலகம் இந்திரர்\nஅமிழ்தம் இயைவது ஆயினும் இனிதெனத்", english: "Even if one were offered Indra's nectar, it would not taste sweet if eaten alone." },
     { label: "Panel (d)", tamil: "தமிழ் மொழி போல் இனிது எங்கும் காணோம்\nமக்கள் தாமே நாகரிகம் ஆவர்", english: "We see nothing as sweet as the Tamil tongue anywhere. People themselves become civilisation." },
     { label: "Panel (e)", tamil: "அகர முதல எழுத்தெல்லாம் ஆதி\nபகவன் முதற்றே உலகு", english: "As the letter 'A' is first of all letters, so is the eternal God first in the world." },
@@ -91,10 +91,10 @@ export default function DemoVision() {
       {/* Setup */}
       <div className="max-w-2xl mx-auto mb-12 text-center space-y-4">
         <p className="text-lg leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-          This is a <strong style={{ color: "var(--text-primary)" }}>palm-leaf manuscript</strong> of the Tolkāppiyam — one of the oldest surviving works in Tamil, dating to roughly <strong style={{ color: "var(--text-primary)" }}>300 BCE</strong>.
+          This is a <strong style={{ color: "var(--text-primary)" }}>palm-leaf manuscript</strong> of the Tolkāppiyam, one of the oldest surviving works in Tamil, dating to roughly <strong style={{ color: "var(--text-primary)" }}>300 BCE</strong>.
         </p>
         <p className="text-base leading-relaxed" style={{ color: "var(--text-tertiary)" }}>
-          Faded ink, brittle palm leaves, ancient letterforms that no longer match modern Tamil fonts. Standard OCR engines fail on documents like this. Sarvam Vision is a 3B vision-language model trained specifically for Indian scripts — handwritten, printed, or ancient.
+          Faded ink, brittle palm leaves, ancient letterforms that no longer match modern Tamil fonts. Standard OCR engines fail on documents like this. Sarvam Vision is a 3B vision-language model trained specifically for Indian scripts: handwritten, printed, or ancient.
         </p>
       </div>
 
@@ -289,7 +289,7 @@ export default function DemoVision() {
       {phase === "done" && (
         <div className="mt-10 text-center anim-fade-in space-y-5">
           <p className="text-lg leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-            A 2,300-year-old palm-leaf manuscript — read in seconds.
+            A 2,300-year-old palm-leaf manuscript, read in seconds.
           </p>
           <p className="text-base" style={{ color: "var(--text-tertiary)" }}>
             Sarvam Vision supports 22 Indian scripts, from ancient manuscripts to modern government forms.
