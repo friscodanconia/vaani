@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState, memo } from "react";
 import LanguageBadge from "./LanguageBadge";
+import { getSharedAudio } from "@/lib/audioContext";
 
 interface AnswerCardProps {
   question: string;
@@ -20,37 +21,63 @@ function AnswerCard({
   totalTimeMs,
   autoPlay = false,
 }: AnswerCardProps) {
-  const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [autoPlayFailed, setAutoPlayFailed] = useState(false);
   const hasTriedAutoPlay = useRef(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Get the shared (pre-unlocked) audio element
+  useEffect(() => {
+    const audio = getSharedAudio();
+    audioRef.current = audio;
+
+    const onPlay = () => setIsPlaying(true);
+    const onPause = () => setIsPlaying(false);
+    const onEnded = () => setIsPlaying(false);
+
+    audio.addEventListener("play", onPlay);
+    audio.addEventListener("pause", onPause);
+    audio.addEventListener("ended", onEnded);
+
+    return () => {
+      audio.removeEventListener("play", onPlay);
+      audio.removeEventListener("pause", onPause);
+      audio.removeEventListener("ended", onEnded);
+    };
+  }, []);
 
   useEffect(() => {
     if (audioBase64 && audioRef.current) {
       const audio = audioRef.current;
+      audio.volume = 1;
       audio.src = `data:audio/mp3;base64,${audioBase64}`;
 
       if (autoPlay && !hasTriedAutoPlay.current) {
         hasTriedAutoPlay.current = true;
 
         const attemptPlay = () => {
-          const playPromise = audio.play();
-          if (playPromise !== undefined) {
-            playPromise.catch(() => {
-              setAutoPlayFailed(true);
-            });
-          }
+          audio.play().catch(() => {
+            // Autoplay blocked — user will see the Play button
+          });
         };
 
         if (audio.readyState >= 2) {
           attemptPlay();
         } else {
-          audio.addEventListener('canplay', attemptPlay, { once: true });
+          audio.addEventListener("canplay", attemptPlay, { once: true });
           audio.load();
         }
       }
     }
   }, [audioBase64, autoPlay]);
+
+  // Clean up on unmount: stop playback
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, []);
 
   return (
     <div className="glass-card p-5 anim-slide-up">
@@ -82,20 +109,14 @@ function AnswerCard({
                 style={{
                   height: "12px",
                   color: "var(--accent)",
-                  animation: `audio-wave 0.8s ease-in-out infinite`,
+                  animationName: "audio-wave",
+                  animationDuration: "0.8s",
+                  animationTimingFunction: "ease-in-out",
+                  animationIterationCount: "infinite",
                   animationDelay: `${i * 0.1}s`,
                 }}
               />
             ))}
-          </div>
-        )}
-
-        {autoPlayFailed && autoPlay && (
-          <div className="mt-3 flex items-center gap-2 rounded-lg px-3 py-2 text-xs anim-fade-in" style={{ background: "var(--accent-subtle)", color: "var(--accent)" }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 010 7.07" strokeLinecap="round" />
-            </svg>
-            <span className="font-medium">Turn on volume and click Play to hear the answer</span>
           </div>
         )}
       </div>
@@ -149,7 +170,10 @@ function AnswerCard({
                   className="w-1 h-1 rounded-full"
                   style={{
                     background: "var(--accent)",
-                    animation: `glow-pulse 1s ease-in-out infinite`,
+                    animationName: "glow-pulse",
+                    animationDuration: "1s",
+                    animationTimingFunction: "ease-in-out",
+                    animationIterationCount: "infinite",
                     animationDelay: `${i * 0.15}s`,
                   }}
                 />
@@ -163,13 +187,6 @@ function AnswerCard({
           {(totalTimeMs / 1000).toFixed(1)}s
         </span>
       </div>
-
-      <audio
-        ref={audioRef}
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
-        onEnded={() => setIsPlaying(false)}
-      />
     </div>
   );
 }

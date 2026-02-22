@@ -13,6 +13,7 @@ import {
 import type { DemoScenario, DemoTurn } from "@/lib/demoData";
 import { SUPPORTED_LANGUAGES } from "@/lib/constants";
 import type { PipelineStage, StageStatus } from "@/lib/constants";
+import { unlockAudio } from "@/lib/audioContext";
 
 type DemoPhase =
   | "idle"
@@ -228,6 +229,7 @@ export default function OldDemoView() {
   );
 
   const runDemo = useCallback(() => {
+    unlockAudio();
     clearTimers();
     setPhase("starting");
     setStages(defaultStages());
