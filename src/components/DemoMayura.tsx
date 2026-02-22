@@ -82,7 +82,7 @@ export default function DemoMayura() {
     const source = ctx.createBufferSource();
     source.buffer = buffer;
     const gain = ctx.createGain();
-    gain.gain.value = 0.06;
+    gain.gain.value = 0.18;
     source.connect(gain);
     gain.connect(ctx.destination);
     source.start();
