@@ -123,7 +123,6 @@ export const DEMO_SCENARIOS: DemoScenario[] = [
 export const DEMO_STAGE_TIMING: { id: PipelineStage; delayBefore: number; duration: number }[] = [
   { id: "parse", delayBefore: 0, duration: 1400 },
   { id: "stt", delayBefore: 500, duration: 900 },
-  { id: "lid", delayBefore: 200, duration: 350 },
   { id: "llm", delayBefore: 200, duration: 2000 },
   { id: "translate", delayBefore: 200, duration: 700 },
   { id: "tts", delayBefore: 200, duration: 550 },
@@ -132,7 +131,6 @@ export const DEMO_STAGE_TIMING: { id: PipelineStage; delayBefore: number; durati
 // Follow-up turn: skips parse, slightly faster
 export const DEMO_STAGE_TIMING_FOLLOWUP: { id: PipelineStage; delayBefore: number; duration: number }[] = [
   { id: "stt", delayBefore: 0, duration: 800 },
-  { id: "lid", delayBefore: 200, duration: 300 },
   { id: "llm", delayBefore: 200, duration: 1600 },
   { id: "translate", delayBefore: 200, duration: 600 },
   { id: "tts", delayBefore: 200, duration: 500 },
