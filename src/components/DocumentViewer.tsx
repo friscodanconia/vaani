@@ -14,7 +14,7 @@ export default function DocumentViewer({
   pageCount,
 }: DocumentViewerProps) {
   return (
-    <div className="glass-card p-5 h-full flex flex-col overflow-hidden">
+    <div className="glass-card p-5 h-full flex flex-col overflow-hidden" style={{ border: "1.5px solid var(--border-visible)" }}>
       <div className="flex items-start gap-3.5">
         <div
           className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl"

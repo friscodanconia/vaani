@@ -489,7 +489,7 @@ export default function OldDemoView() {
                   <p className="text-xs font-semibold uppercase tracking-[0.15em]" style={{ color: "var(--text-tertiary)" }}>
                     Question ({scenario.languageName} voice)
                   </p>
-                  <div className="glass-card p-5 flex flex-col flex-1 overflow-hidden" style={{ minHeight: "160px" }}>
+                  <div className="glass-card p-5 flex flex-col flex-1 overflow-hidden" style={{ minHeight: "160px", border: "1.5px solid var(--border-visible)" }}>
                     {showMic ? (
                       <div className="flex flex-col h-full">
                         <div className="flex items-start gap-3 mb-3">
