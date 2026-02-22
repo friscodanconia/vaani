@@ -42,13 +42,13 @@ export default function ModelCard({
         {/* Content */}
         <div className={`relative p-4 sm:p-8 pb-5 sm:pb-10 flex flex-col gap-1 h-full ${span ? "text-center items-center" : ""}`}>
           <h3
-            className="font-display text-base sm:text-2xl italic"
+            className="font-display text-lg sm:text-2xl italic"
             style={{ color: "var(--text-primary)" }}
           >
             {title}
           </h3>
           <p
-            className={`text-xs sm:text-base leading-relaxed mt-1 flex-1 ${span ? "max-w-sm" : ""}`}
+            className={`text-sm sm:text-base font-normal sm:font-light leading-relaxed mt-1 flex-1 ${span ? "max-w-sm" : ""}`}
             style={{ color: "var(--text-secondary)" }}
           >
             {description}
