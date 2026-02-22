@@ -269,10 +269,10 @@ export default function DemoTranslate() {
         </p>
 
         {/* Translation text area */}
-        <div className="min-h-[4rem] mb-2">
+        <div className="min-h-[4rem] mb-2 overflow-hidden">
           {card.status !== "idle" && (
             <p
-              className="text-sm font-medium leading-relaxed"
+              className="text-sm font-medium leading-relaxed break-words"
               style={{ color: "var(--text-primary)" }}
             >
               {displayedText}
