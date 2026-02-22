@@ -157,9 +157,7 @@ export default function DemoBulbul() {
                   key={i}
                   className={`glass-card p-3 sm:p-5 text-center transition-all duration-500 flex flex-col ${
                     isPlaying ? "ring-2 ring-[var(--accent)]/30" : ""
-                  } ${isWaiting && activeIndex < i ? "opacity-40" : "opacity-100"} ${
-                    ""
-                  }`}
+                  } ${isWaiting && activeIndex < i ? "opacity-40" : "opacity-100"}`}
                 >
                   {/* Language name */}
                   <p className="text-base sm:text-lg font-semibold" style={{ color: "var(--text-primary)" }}>
