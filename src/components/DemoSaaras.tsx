@@ -399,7 +399,7 @@ export default function DemoSaaras() {
               Replay
             </button>
             <a
-              href="https://www.sarvam.ai/models/saaras"
+              href="https://www.sarvam.ai/apis/speech-to-text"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold tracking-wide transition-all duration-300 hover-lift"
