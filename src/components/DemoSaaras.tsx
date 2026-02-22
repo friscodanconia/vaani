@@ -120,7 +120,36 @@ export default function DemoSaaras() {
   };
 
   // Detect English words (transliterated Hindi is written in Devanagari by Saaras)
-  const isEnglish = (word: string) => /^[a-zA-Z]/.test(word);
+  // English-origin words transliterated into Devanagari — identified by index
+  // so the color coding actually works (regex detection fails since everything is Devanagari)
+  const ENGLISH_INDICES = new Set([
+    0,  // रिमेंबर (Remember)
+    1,  // लाइफ (Life)
+    2,  // इज (Is)
+    4,  // रेस (Race)
+    17, // लेट (Let)
+    18, // मी (Me)
+    19, // टेल (Tell)
+    20, // यू (You)
+    22, // वेरी (Very)
+    23, // इंटरेस्टिंग (Interesting)
+    24, // स्टोरी (Story)
+    26, // एस्ट्रोनॉफ्स (Astronaut's)
+    27, // पेन (Pen)
+    29, // स्पेस (Space)
+    31, // फाउंटेन (Fountain)
+    32, // पेन (Pen)
+    33, // बॉल (Ball)
+    34, // पेन (Pen)
+    40, // डॉलर (Dollar)
+    45, // साइंटिस्ट (Scientist)
+    48, // पेन (Pen)
+    54, // एंगल (Angle)
+    57, // टेंपरेचर (Temperature)
+    58, // जीरो (Zero)
+    59, // ग्रेविटी (Gravity)
+  ]);
+  const isEnglish = (_word: string, index: number) => ENGLISH_INDICES.has(index);
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-12 sm:py-20">
@@ -314,7 +343,7 @@ export default function DemoSaaras() {
               >
                 <p className="text-base leading-[2] font-body">
                   {TRANSCRIPT_WORDS.slice(0, visibleWords).map((word, i) => {
-                    const eng = isEnglish(word);
+                    const eng = isEnglish(word, i);
                     return (
                       <span
                         key={i}
