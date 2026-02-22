@@ -14,7 +14,7 @@ export default function DocumentViewer({
   pageCount,
 }: DocumentViewerProps) {
   return (
-    <div className="glass-card p-5">
+    <div className="glass-card p-5 h-full flex flex-col overflow-hidden">
       <div className="flex items-start gap-3.5">
         <div
           className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl"
@@ -42,13 +42,14 @@ export default function DocumentViewer({
       </div>
 
       <div
-        className="mt-4 rounded-xl p-3.5 text-sm leading-relaxed font-mono"
+        className="mt-4 rounded-xl p-3.5 text-sm leading-relaxed font-mono flex-1 break-words"
         style={{
           background: "var(--bg-secondary)",
           color: "var(--text-secondary)",
           border: "1.5px solid var(--border-subtle)",
           maxHeight: "110px",
           overflow: "hidden",
+          overflowWrap: "anywhere",
           maskImage: "linear-gradient(to bottom, black 50%, transparent 100%)",
           WebkitMaskImage: "linear-gradient(to bottom, black 50%, transparent 100%)",
         }}

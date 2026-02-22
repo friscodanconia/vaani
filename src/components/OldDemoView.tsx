@@ -423,13 +423,14 @@ export default function OldDemoView() {
 
           {showDoc && (
             <div>
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2.5">
+              <div className="grid gap-4 md:grid-cols-2 overflow-hidden">
+                <div className="flex flex-col gap-2.5">
                   <p className="text-xs font-semibold uppercase tracking-[0.15em] anim-fade-in" style={{ color: "var(--text-tertiary)" }}>
                     Document (Hindi)
                   </p>
-                  <div className="relative">
+                  <div className="relative flex-1">
                     <div
+                      className="h-full"
                       style={{
                         animation: "document-focus 2.2s cubic-bezier(0.16, 1, 0.3, 1) both",
                         animationDelay: "0.2s"
@@ -484,11 +485,11 @@ export default function OldDemoView() {
                   </div>
                 </div>
 
-                <div className="space-y-2.5">
+                <div className="flex flex-col gap-2.5">
                   <p className="text-xs font-semibold uppercase tracking-[0.15em]" style={{ color: "var(--text-tertiary)" }}>
                     Question ({scenario.languageName} voice)
                   </p>
-                  <div className="glass-card p-5 flex flex-col" style={{ minHeight: "160px" }}>
+                  <div className="glass-card p-5 flex flex-col flex-1 overflow-hidden" style={{ minHeight: "160px" }}>
                     {showMic ? (
                       <div className="flex flex-col h-full">
                         <div className="flex items-start gap-3 mb-3">
